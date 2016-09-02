@@ -28,14 +28,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         tvCount = (EditText) findViewById(R.id.tv_count);
-        findViewById(R.id.bt_set).setOnClickListener(this);
+        findViewById(R.id.bt_set_num).setOnClickListener(this);
+        findViewById(R.id.bt_set_note).setOnClickListener(this);
         findViewById(R.id.bt_clear).setOnClickListener(this);
+        ((TextView)findViewById(R.id.tv_lanucher)).setText(BadgeUtil.getLauncherName(getApplicationContext()));
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.bt_set:
+            case R.id.bt_set_num:
+                try {
+                    final int count = Integer.parseInt(tvCount.getText().toString());
+                    //点击set 后，app退到桌面等待3s看效果（有的launcher当app在前台设置未读数量无效）
+                    BadgeUtil.setBadgeCount( getApplicationContext(),count);
+                    Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT).show();
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+                break;
+            case R.id.bt_set_note:
                 try {
                     final int count = Integer.parseInt(tvCount.getText().toString());
                     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext())
@@ -46,16 +58,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     mBuilder.setContentTitle("test");
                     mBuilder.setTicker("test");
                     mBuilder.setContentText("test");
-
-                    //点击set 后，app退到桌面等待3s看效果（有的launcher当app在前台设置未读数量无效）
                     final Notification notification = mBuilder.build();
-                    new Handler(getMainLooper()).postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
+                    //点击set 后，app退到桌面等待3s看效果（有的launcher当app在前台设置未读数量无效）
                             BadgeUtil.sendBadgeNotification(notification, NOTIFY_ID, getApplicationContext(), count, count);
                             Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT).show();
-                        }
-                    }, 3 * 1000);
 
                 } catch (NumberFormatException e) {
                     e.printStackTrace();

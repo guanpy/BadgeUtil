@@ -16,8 +16,16 @@ public class BadgeUtil {
     private static final String TAG = BadgeUtil.class.getSimpleName();
     private static List<Integer> notifyIdList = new ArrayList<>();
     private static Badger badger;
-
     /**
+     * 直接设置角标数量（miui不支持）
+     * @param context
+     * @param count           整个app所有的未读数量
+     */
+    public static void setBadgeCount(Context context, int count) {
+        sendBadgeNotification(null,0,context,0,count);
+    }
+    /**
+     * 更新角标和发送notification并行
      * @param notification    更新角标一般都是和发送notification并行的。如果不想发notification只是更新角标，这里传null
      * @param notifyID        notification id
      * @param context
@@ -34,8 +42,9 @@ public class BadgeUtil {
         String currentHomePackage = getLauncherName(context);
 
         Log.d(TAG, "currentHomePackage:" + currentHomePackage);
-        if (badger == null)
+        if (badger == null) {
             badger = BadgerType.getBadgerByLauncherName(currentHomePackage);
+        }
         badger.executeBadge(context, notification, notifyID, thisNotifyCount, count);
     }
 
@@ -55,7 +64,7 @@ public class BadgeUtil {
      * @param context
      * @return
      */
-    private static String getLauncherName(Context context) {
+    public static String getLauncherName(Context context) {
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
         ResolveInfo resolveInfo = context.getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);

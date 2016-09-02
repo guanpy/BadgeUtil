@@ -14,19 +14,34 @@
         android:textSize="18sp" />
 
     <Button
-        android:id="@+id/bt_set"
+        android:id="@+id/bt_set_num"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_count"
-        android:text="set"
+        android:text="设置角标数量"
+        android:textColor="@android:color/black" />
+    <Button
+        android:id="@+id/bt_set_note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bt_set_num"
+        android:text="发送通知和角标数量"
         android:textColor="@android:color/black" />
 
     <Button
         android:id="@+id/bt_clear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/bt_set"
+        android:layout_below="@+id/bt_set_note"
         android:text="clear"
         android:textColor="@android:color/black" />
 
+    <TextView
+        android:id="@+id/tv_lanucher"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:layout_below="@+id/bt_clear"
+        android:layout_marginTop="10dip"
+        android:textSize="18sp" />
 </RelativeLayout>

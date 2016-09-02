@@ -1,6 +1,7 @@
 package com.leethink.badger.impl;
 
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 
 
@@ -16,10 +17,13 @@ public class XiaomiHomeBadger extends Badger {
     @Override
     public void executeBadge(Context context, Notification notification, int notificationId, int thisNotificationCount, int count) {
         try {
-            Field field = notification.getClass().getDeclaredField("extraNotification");
-            Object extraNotification = field.get(notification);
-            Method method = extraNotification.getClass().getDeclaredMethod("setMessageCount", int.class);
-            method.invoke(extraNotification, thisNotificationCount);//小米这里只要这个notificationId 对应的count，而不是所有notification count
+            if(null!=notification){
+                Field field = notification.getClass().getDeclaredField("extraNotification");
+                Object extraNotification = field.get(notification);
+                Method method = extraNotification.getClass().getDeclaredMethod("setMessageCount", int.class);
+                method.invoke(extraNotification, thisNotificationCount);//小米这里只要这个notificationId 对应的count，而不是所有notification count
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
